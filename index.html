@@ -1,175 +1,90 @@
-html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Гимназия №46 — Легендарное место</title>
+<title>Гимназия №46 — Онлайн счетчик</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #090d16; color: #f8fafc; line-height: 1.6; overflow-x: hidden; }
-
-  header { position: sticky; top: 0; background: rgba(9, 13, 22, 0.85); backdrop-filter: blur(12px); padding: 18px 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; z-index: 100; }
-  .logo { font-size: 24px; font-weight: 900; background: linear-gradient(90deg, #38bdf8, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; letter-spacing: 1px; }
-  nav a { color: #cbd5e1; text-decoration: none; margin-left: 25px; font-weight: 600; transition: 0.2s; font-size: 15px; }
-  nav a:hover { color: #a855f7; }
-
-  .hero { padding: 110px 8% 90px; text-align: center; max-width: 950px; margin: 0 auto; position: relative; }
-  .badge { display: inline-block; background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.4); padding: 6px 16px; border-radius: 50px; font-size: 14px; font-weight: 700; margin-bottom: 20px; }
-  .hero h1 { font-size: 54px; margin-bottom: 20px; line-height: 1.15; font-weight: 900; }
-  .hero span { background: linear-gradient(90deg, #38bdf8, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero p { font-size: 19px; color: #94a3b8; margin-bottom: 35px; max-width: 700px; margin-left: auto; margin-right: auto; }
-  
-  .btn { display: inline-block; background: linear-gradient(90deg, #38bdf8, #8b5cf6); color: #fff; padding: 16px 34px; border-radius: 10px; text-decoration: none; font-weight: 800; transition: 0.25s; border: none; cursor: pointer; font-size: 16px; box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.5); user-select: none; }
-  .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 30px -5px rgba(139, 92, 246, 0.7); }
-  .btn:active { transform: scale(0.95); }
-
-  section { padding: 75px 8%; max-width: 1200px; margin: 0 auto; }
-  h2 { font-size: 36px; margin-bottom: 45px; text-align: center; font-weight: 800; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-  .card { background: #111827; padding: 32px; border-radius: 16px; border: 1px solid #1f2937; transition: 0.3s; }
-  .card:hover { border-color: #a855f7; transform: translateY(-6px); background: #151e32; }
-  .icon { font-size: 36px; margin-bottom: 15px; display: block; }
-  .card h3 { font-size: 21px; margin-bottom: 10px; color: #f8fafc; }
-  .card p { color: #94a3b8; font-size: 15px; }
-
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: center; background: #111827; padding: 40px; border-radius: 20px; border: 1px solid #1f2937; }
-  .stat-num { font-size: 42px; font-weight: 900; color: #38bdf8; display: block; }
-  .stat-label { color: #94a3b8; font-size: 15px; font-weight: 600; }
-
-  .hype-box { background: linear-gradient(135deg, #1e1b4b, #111827); padding: 55px 30px; border-radius: 20px; text-align: center; border: 1px solid #4c1d95; }
-  .counter-display { font-size: 34px; font-weight: 900; color: #38bdf8; margin: 15px 0 25px; transition: 0.2s; }
-  .live-dot { display: inline-block; width: 10px; height: 10px; background: #22c55e; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px #22c55e; }
-
-  footer { text-align: center; padding: 35px; color: #64748b; border-top: 1px solid #1e293b; margin-top: 50px; font-size: 14px; }
+  body { margin: 0; background: #090d16; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; text-align: center; padding: 20px; }
+  .card { background: #111827; border: 1px solid #334155; border-radius: 20px; padding: 40px 25px; max-width: 420px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+  h1 { font-size: 26px; margin-bottom: 10px; background: linear-gradient(90deg, #38bdf8, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  #status { font-size: 13px; color: #94a3b8; margin-bottom: 25px; }
+  .num { font-size: 72px; font-weight: 900; color: #38bdf8; margin: 15px 0 30px; transition: transform 0.15s; }
+  button { background: linear-gradient(90deg, #38bdf8, #8b5cf6); color: #fff; border: none; padding: 18px 40px; font-size: 22px; font-weight: 800; border-radius: 14px; cursor: pointer; width: 100%; box-shadow: 0 10px 20px rgba(139, 92, 246, 0.4); -webkit-tap-highlight-color: transparent; }
+  button:active { transform: scale(0.95); }
 </style>
 </head>
 <body>
 
-<header>
-  <a href="#" class="logo">ГИМНАЗИЯ №46</a>
-  <nav>
-    <a href="#why">Почему мы топ</a>
-    <a href="#stats">Цифры</a>
-    <a href="#hype">Респект</a>
-  </nav>
-</header>
-
-<div class="hero">
-  <div class="badge">🔥 Официально: лучшая школа галактики</div>
-  <h1>Место, где рождаются <span>легенды</span></h1>
-  <p>46-я гимназия — это не просто уроки и перемены. Это мощнейшее комьюнити, топовый вайб, сильные знания и лучшие люди в одном здании.</p>
-  <a href="#hype" class="btn">Зарядить респект 46-й ⚡</a>
+<div class="card">
+  <h1>ГИМНАЗИЯ №46 🔥</h1>
+  <div id="status">Подключение к серверу...</div>
+  <div class="num" id="score">4600</div>
+  <button onclick="addPoint()">Кинуть респект (+1)</button>
 </div>
 
-<section id="why">
-  <h2>6 причин, почему 46-я вне конкуренции</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="icon">🧠</span>
-      <h3>Мощный интеллект</h3>
-      <p>Здесь умеют и сложную олимпиаду затащить, и за пять минут до звонка списать домашку так, что никто не заметит.</p>
-    </div>
-    <div class="card">
-      <span class="icon">⚡</span>
-      <h3>Неповторимый вайб</h3>
-      <p>Коридоры 46-й помнят тысячи историй, мемов и легендарных моментов на переменах.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🏆</span>
-      <h3>Всегда на высоте</h3>
-      <p>Спорт, творчество, наука или киберспорт — ученики 46-й забирают призовые места везде, где появляются.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🤝</span>
-      <h3>Братство и поддержка</h3>
-      <p>Своих не бросаем. Выпускники 46-й узнают друг друга с полуслова даже спустя годы.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🍕</span>
-      <h3>Легендарная столовая</h3>
-      <p>Школьные булочки и пицца — топливо, на котором держатся все великие открытия.</p>
-    </div>
-    <div class="card">
-      <span class="icon">🎓</span>
-      <h3>Учителя с характером</h3>
-      <p>Строгие, но справедливые наставники, которые реально учат думать головой, а не просто зубрить.</p>
-    </div>
-  </div>
-</section>
-
-<section id="stats">
-  <div class="stats-grid">
-    <div>
-      <span class="stat-num">100%</span>
-      <span class="stat-label">Уровень крутости</span>
-    </div>
-    <div>
-      <span class="stat-num">№46</span>
-      <span class="stat-label">Счастливое число</span>
-    </div>
-    <div>
-      <span class="stat-num">∞</span>
-      <span class="stat-label">Запас мемов и историй</span>
-    </div>
-    <div>
-      <span class="stat-num">TOP-1</span>
-      <span class="stat-label">В сердечке навсегда</span>
-    </div>
-  </div>
-</section>
-
-<section id="hype">
-  <div class="hype-box">
-    <h2><span class="live-dot"></span>Онлайн-рейтинг Гимназии №46</h2>
-    <p style="color: #cbd5e1;">Кликай! Счетчик обновляется в реальном времени у всех, кто сейчас на сайте.</p>
-    <div class="counter-display">Респектов: <span id="score">4600</span> 🔥</div>
-    <button class="btn" onclick="addHype()">Кинуть респект (+1)</button>
-  </div>
-</section>
-
-<footer>
-  Сделано с уважением к легендам Гимназии №46 • 2026
-</footer>
-
 <script>
-  const API = 'https://jasoncameron.dev';
-  const NS = 'gym46_msk_spb_live';
-  const KEY = 'respects';
+  // Используем стабильное облачное хранилище KeyValue / JSONBlob
+  const BLOB_URL = 'https://jsonblob.com';
   const scoreEl = document.getElementById('score');
-  let lastVal = -1;
+  const statusEl = document.getElementById('status');
+  let currentScore = 4600;
+  let isUpdating = false;
 
-  function renderScore(val) {
-    if (val !== lastVal) {
-      lastVal = val;
-      scoreEl.innerText = 4600 + val;
-      scoreEl.style.color = '#a855f7';
-      setTimeout(() => scoreEl.style.color = '#38bdf8', 200);
+  function updateUI(val) {
+    if (val !== currentScore) {
+      currentScore = val;
+      scoreEl.innerText = currentScore;
+      scoreEl.style.transform = 'scale(1.15)';
+      setTimeout(() => scoreEl.style.transform = 'scale(1)', 150);
     }
   }
 
-  function sync() {
-    fetch(`${API}/get/${NS}/${KEY}`)
-      .then(r => r.json())
-      .then(d => {
-        if (typeof d.value === 'number') renderScore(d.value);
-      })
-      .catch(() => {});
+  // Читаем актуальное число из облака
+  async function loadScore() {
+    if (isUpdating) return;
+    try {
+      const res = await fetch(BLOB_URL, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Ошибка сети');
+      const data = await res.json();
+      if (typeof data.count === 'number') {
+        updateUI(data.count);
+        statusEl.innerText = '🟢 Онлайн (синхронизировано)';
+        statusEl.style.color = '#22c55e';
+      }
+    } catch (e) {
+      statusEl.innerText = '🔴 Нет связи с сервером (проверьте интернет/VPN)';
+      statusEl.style.color = '#ef4444';
+    }
   }
 
-  function addHype() {
-    if (lastVal >= 0) renderScore(lastVal + 1);
-    fetch(`${API}/hit/${NS}/${KEY}`)
-      .then(r => r.json())
-      .then(d => {
-        if (typeof d.value === 'number') renderScore(d.value);
-      })
-      .catch(() => {});
+  // Прибавляем +1 и сохраняем в облако
+  async function addPoint() {
+    isUpdating = true;
+    const nextScore = currentScore + 1;
+    updateUI(nextScore); // Сразу меняем цифру на экране при нажатии
+    statusEl.innerText = '⏳ Сохранение...';
+    statusEl.style.color = '#f59e0b';
+
+    try {
+      const res = await fetch(BLOB_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ count: nextScore })
+      });
+      if (!res.ok) throw new Error('Ошибка сохранения');
+      statusEl.innerText = '🟢 Онлайн (сохранено!)';
+      statusEl.style.color = '#22c55e';
+    } catch (e) {
+      statusEl.innerText = '🔴 Ошибка отправки на сервер';
+      statusEl.style.color = '#ef4444';
+    } finally {
+      isUpdating = false;
+    }
   }
 
-  sync();
-  setInterval(sync, 1500);
+  loadScore();
+  setInterval(loadScore, 2000);
 </script>
 
 </body>
