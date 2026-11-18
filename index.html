@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -20,9 +21,9 @@
   .hero span { background: linear-gradient(90deg, #38bdf8, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .hero p { font-size: 19px; color: #94a3b8; margin-bottom: 35px; max-width: 700px; margin-left: auto; margin-right: auto; }
   
-  .btn { display: inline-block; background: linear-gradient(90deg, #38bdf8, #8b5cf6); color: #fff; padding: 16px 34px; border-radius: 10px; text-decoration: none; font-weight: 800; transition: 0.25s; border: none; cursor: pointer; font-size: 16px; box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.5); }
+  .btn { display: inline-block; background: linear-gradient(90deg, #38bdf8, #8b5cf6); color: #fff; padding: 16px 34px; border-radius: 10px; text-decoration: none; font-weight: 800; transition: 0.25s; border: none; cursor: pointer; font-size: 16px; box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.5); user-select: none; }
   .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 30px -5px rgba(139, 92, 246, 0.7); }
-  .btn:active { transform: scale(0.96); }
+  .btn:active { transform: scale(0.95); }
 
   section { padding: 75px 8%; max-width: 1200px; margin: 0 auto; }
   h2 { font-size: 36px; margin-bottom: 45px; text-align: center; font-weight: 800; }
@@ -38,7 +39,7 @@
   .stat-label { color: #94a3b8; font-size: 15px; font-weight: 600; }
 
   .hype-box { background: linear-gradient(135deg, #1e1b4b, #111827); padding: 55px 30px; border-radius: 20px; text-align: center; border: 1px solid #4c1d95; }
-  .counter-display { font-size: 32px; font-weight: 900; color: #38bdf8; margin: 15px 0 25px; transition: 0.2s; }
+  .counter-display { font-size: 34px; font-weight: 900; color: #38bdf8; margin: 15px 0 25px; transition: 0.2s; }
   .live-dot { display: inline-block; width: 10px; height: 10px; background: #22c55e; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px #22c55e; }
 
   footer { text-align: center; padding: 35px; color: #64748b; border-top: 1px solid #1e293b; margin-top: 50px; font-size: 14px; }
@@ -123,7 +124,7 @@
   <div class="hype-box">
     <h2><span class="live-dot"></span>Онлайн-рейтинг Гимназии №46</h2>
     <p style="color: #cbd5e1;">Кликай! Счетчик обновляется в реальном времени у всех, кто сейчас на сайте.</p>
-    <div class="counter-display">Респектов: <span id="score">Загрузка...</span> 🔥</div>
+    <div class="counter-display">Респектов: <span id="score">4600</span> 🔥</div>
     <button class="btn" onclick="addHype()">Кинуть респект (+1)</button>
   </div>
 </section>
@@ -133,52 +134,42 @@
 </footer>
 
 <script>
-  // Уникальный адрес вашего общего счетчика
-  const API_URL = 'https://counterapi.dev';
+  const API = 'https://jasoncameron.dev';
+  const NS = 'gym46_msk_spb_live';
+  const KEY = 'respects';
   const scoreEl = document.getElementById('score');
-  let lastCount = 0;
+  let lastVal = -1;
 
-  // Функция подсвечивания при обновлении цифр
-  function updateDisplay(newCount) {
-    if (newCount !== lastCount) {
-      scoreEl.innerText = newCount + 4600;
+  function renderScore(val) {
+    if (val !== lastVal) {
+      lastVal = val;
+      scoreEl.innerText = 4600 + val;
       scoreEl.style.color = '#a855f7';
-      scoreEl.style.transform = 'scale(1.1)';
-      setTimeout(() => {
-        scoreEl.style.color = '#38bdf8';
-        scoreEl.style.transform = 'scale(1)';
-      }, 250);
-      lastCount = newCount;
+      setTimeout(() => scoreEl.style.color = '#38bdf8', 200);
     }
   }
 
-  // Загружаем актуальное число с сервера
-  function fetchScore() {
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
-        updateDisplay(data.count || 0);
+  function sync() {
+    fetch(`${API}/get/${NS}/${KEY}`)
+      .then(r => r.json())
+      .then(d => {
+        if (typeof d.value === 'number') renderScore(d.value);
       })
-      .catch(() => {
-        if (scoreEl.innerText === 'Загрузка...') scoreEl.innerText = 4600;
-      });
+      .catch(() => {});
   }
 
-  // Отправляем ваш клик на сервер
   function addHype() {
-    // Сразу визуально прибавляем +1 для мгновенного отклика
-    updateDisplay(lastCount + 1);
-    
-    fetch(API_URL + '/up')
-      .then(res => res.json())
-      .then(data => {
-        if (data.count) updateDisplay(data.count);
-      });
+    if (lastVal >= 0) renderScore(lastVal + 1);
+    fetch(`${API}/hit/${NS}/${KEY}`)
+      .then(r => r.json())
+      .then(d => {
+        if (typeof d.value === 'number') renderScore(d.value);
+      })
+      .catch(() => {});
   }
 
-  // Загружаем при старте и проверяем обновления каждые 2 секунды
-  fetchScore();
-  setInterval(fetchScore, 2000);
+  sync();
+  setInterval(sync, 1500);
 </script>
 
 </body>
